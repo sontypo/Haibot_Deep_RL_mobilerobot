@@ -1,0 +1,24 @@
+<launch>
+  <!-- Set parameters: policy_type, net_type, using_per, run_mode -->
+  <arg name="model_dir" value="/deep_rl_gazebo/save_model/PT_trial_1"/>
+  <arg name="policy_type" default="off"/>
+  <arg name="net_type" default="normal"/>
+  <arg name="using_per" default="false"/>
+  <arg name="run_mode" default="train"/>
+  <arg name="max_episodes" default="2501"/>
+  <arg name="load_episode" default="0"/>
+  <arg name="scan_num" default="20"/>
+  <arg name="action_size" default="5"/>
+
+  <node pkg="deep_rl_gazebo" type="train_model.py" name="deep_rl_model" output="screen">
+    <param name="model_dir" value="$(arg model_dir)"/>
+    <param name="policy_type"  value="$(arg policy_type)"/>
+    <param name="net_type"  value="$(arg net_type)"/>
+    <param name="using_per"  value="$(arg using_per)"/>
+    <param name="run_mode"  value="$(arg run_mode)"/>
+    <param name="max_episodes"  value="$(arg max_episodes)"/>
+    <param name="load_episode" value="$(arg load_episode)"/>
+    <param name="scan_num" value="$(arg scan_num)"/>
+    <param name="action_size" value="$(arg action_size)"/>
+  </node>
+</launch>
