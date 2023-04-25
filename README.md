@@ -12,9 +12,7 @@ ____________<HAIBOTLAB> DIFFERENTIAL ROBOT____________
 	- diffbot_landing: chứa file launch robot vi sai tích hợp cảm biến hokuyo (lidar2d), imu, kinect_v2 (tof camera) mô phỏng trong gazebo, tích hợp chương trình chạy teleop từ bàn phím;
 	- differential_robot: chứa file urdf của robot vi sai;
 	- deep_rl_gazebo: gói chứa các thuật toán deep reinforcement learning đào tạo robot vi sai;
-	- ekf: gói bộ lọc kalman mở rộng giúp trộn dữ liệu cảm biến;
 	- mybot_description: chứa file urdf và meshs của cảm biến Hokuyo;
-	- navigation: chứa các gói tiện ích cho việc điều hướng robot;
 	- robot_description: chứa các file urdf và meshes của cảm biến imu, kinect_v2, các thuộc tính của robot trên gazebo dựa vào pkg turtlebot3;
 	- robot_simulations: chứa các không gian, môi trường xây dựng để robot hoạt động trên trường mô phỏng gazebo dựa vào cách thiết lập của pkg turtlebot3;
 	- File rgbd_cfg.rviz: lưu trữ dữ liệu visualize trên môi trường Rviz.
