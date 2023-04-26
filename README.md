@@ -4,7 +4,7 @@ ____________<HAIBOTLAB> DIFFERENTIAL ROBOT____________
 
 <Son_Nguyen: son94227@gmail.com> 
 
->> Vietnamese Version (English update later - Translate into English if nessesary)
+>> Vietnamese Version (English update later - English translate if nessesary)
 
 ---------------------------------------------------------
 * Hệ thống file trong thư mục differential_haibotlab/src: 
