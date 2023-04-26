@@ -1,6 +1,4 @@
-README.md
-
-____________<HAIBOTLAB> DIFFERENTIAL ROBOT____________
+____________<HAIBOTLAB> DDIFFERENTIAL ROBOT____________
 
 <Son_Nguyen: son94227@gmail.com> 
 
