@@ -1,4 +1,4 @@
-____________<HAIBOTLAB> DDIFFERENTIAL ROBOT____________
+____________<HAIBOTLAB> DEEP REINFORCEMENT LEARNING WITH DIFFERENTIAL ROBOT____________
 
 <Son_Nguyen: son94227@gmail.com> 
 
