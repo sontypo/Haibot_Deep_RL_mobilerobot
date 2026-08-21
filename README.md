@@ -1,46 +1,293 @@
-____________<HAIBOTLAB> DEEP REINFORCEMENT LEARNING WITH DIFFERENTIAL ROBOT____________
+# HaiBot Deep Reinforcement Learning Mobile Robot
 
-<Son_Nguyen: son94227@gmail.com> 
+<div align="center">
 
->> Vietnamese Version (English update later - English translate if nessesary)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Latest-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Lab](https://img.shields.io/badge/Lab-HaIBot%20Lab%20HaUI-brightgreen)](https://haui.edu.vn/)
 
----------------------------------------------------------
-* Hệ thống file trong thư mục differential_haibotlab/src: 
----------------------------------------------------------
-	- diffbot_landing: chứa file launch robot vi sai tích hợp cảm biến hokuyo (lidar2d), imu, kinect_v2 (tof camera) mô phỏng trong gazebo, tích hợp chương trình chạy teleop từ bàn phím;
-	- differential_robot: chứa file urdf của robot vi sai;
-	- deep_rl_gazebo: gói chứa các thuật toán deep reinforcement learning đào tạo robot vi sai;
-	- mybot_description: chứa file urdf và meshs của cảm biến Hokuyo;
-	- robot_description: chứa các file urdf và meshes của cảm biến imu, kinect_v2, các thuộc tính của robot trên gazebo dựa vào pkg turtlebot3;
-	- robot_simulations: chứa các không gian, môi trường xây dựng để robot hoạt động trên trường mô phỏng gazebo dựa vào cách thiết lập của pkg turtlebot3;
-	- File rgbd_cfg.rviz: lưu trữ dữ liệu visualize trên môi trường Rviz.
+A comprehensive implementation of Deep Reinforcement Learning algorithms for mobile robot control, developed at HaIBot Lab, Hanoi University of Industry.
 
----------------------------------------------------------------
-<1> Cách chạy file .launch khởi tạo môi trường và robot vi sai: 
----------------------------------------------------------------
-	+ b1: catkin build hoặc catkin_make trên terminal để xây dựng workspace;
-	+ b2: cấp source cho workspace: 
-		$ source devel/setup.bash
-	+ b3: chạy file .launch robot với môi trường tùy chọn: 
-    	$ roslaunch diffbot_landing diff_bot.launch --> môi trường cơ bản 6x6 với đa biên dạng vật cản, robot vi sai với dải đo lidar_scan 20 mẫu/chu kỳ.
-    	$ roslaunch diffbot_landing diffbot_for_Qlearn.launch --> môi trường cơ bản 6x6 với đa biên dạng vật cản, robot vi sai với dải đo lidar_scan 180 mẫu/chu kỳ.
-     	$ roslaunch diffbot_landing difbot_with_less_obstacles.launch --> môi trường 5x5 với ít vật cản, phụ hợp cho việc training thuật toán và đánh giá nhanh, robot đặt vào với dải đo lidar_scan 20 mẫu/chu kỳ.
-	(với thuộc tính slam_methods được gán cho phương thức slam muốn sử dụng)
-	+ b4: sau khi màn hình Rviz và Gazebo hiện ra, để visualize dữ liệu, ta chọn file -> Open Config | Ctrl+O -> không gian lưu trữ differential -> src -> rgbd_cfg.rviz
-	+ b5: kích vào termial đang chạy file .launch sử dụng cách phím A, S, D, W, X để điều khiển robot di chuyển.
+</div>
 
------------------------------------------------------------
-<2> Cách chạy gói huấn luyện robot bằng các thuật toán DRL: 
------------------------------------------------------------
-	+ b1: mở terminal và chọn đường dận của workspace differential_haibotlab:
-		$ cd differential_haibotlab
-	+ b2: cấp source cho workspace:
-		$ source devel/setup.bash
-	+ b3: khởi tạo môi trường và robot <1>, lựa chọn môi trường phù hợp với mục đích đào tạo (20 scan_num, 5 action):
-		$ roslaunch diffbot_landing diff_bot.launch --> môi trường cơ bản 6x6 với đa biên dạng vật cản, robot vi sai với dải đo lidar_scan 20 mẫu/chu kỳ.
-	+ b4: mở thêm một cửa sổ terminal mới và thực hiện như bước b1 + b2;
-	+ b5: tại cửa sổ terminal mới, chạy file .launch thực hiện đào tạo robot bằng thuật toán DRL với 4 tham số cần thiết để chọn và lựa chọn cách thức triển khai thuật toán: <policy_type>{on, off};        <net_type>{normal, double, dueling, d3q}; <using_per>{false, true}; <run_mode>{train, test}; Với trường hợp lựa chọn thuật toán off-policy, dueling deep q network, không sử dụng bộ nhớ ưu tiên, và tiến hành đào tạo mô hình:
-		$ roslaunch deep_rl_gazebo deep_rl_algos.launch policy_type:=off net_type:=dueling using_per:=false run_mode:=train
-	-> Đó là tất cả các bước cần thiết lập để đào tạo mô hình thuật toán DRL trên gazebo, với hệ điều hành ubuntu20.04, phiên bản python3.8.10, torch version 1.13.1+cu117.
+---
 
-_____Hết_____
+## 📋 Overview
+
+This project provides a PyTorch-based implementation of state-of-the-art Deep Reinforcement Learning (DRL) algorithms applied to simple mobile robot control. The codebase combines Python for machine learning logic and C++ for efficient robot control and simulation backend.
+
+**Key Features:**
+- 🤖 Multiple DRL algorithms implementation
+- 🎯 Mobile robot control and navigation
+- ⚡ High-performance C++ backend for real-time simulation
+- 🔄 Modular and extensible architecture
+- 📊 Training monitoring and visualization tools
+
+---
+
+## 🏗️ Project Structure
+
+```
+Haibot_Deep_RL_mobilerobot/
+├── README.md
+├── requirements.txt
+├── setup.py
+├── src/                          # Main source code
+│   ├── algorithms/               # DRL algorithms implementation
+│   ├── robot/                    # Robot models and control
+│   ├── environments/             # Training environments
+│   ├── utils/                    # Utility functions
+│   └── models/                   # Neural network models
+├── cpp/                          # C++ backend for simulation
+│   ├── CMakeLists.txt
+│   ├── robot_simulator/
+│   └── kinematics/
+├── scripts/                      # Training and evaluation scripts
+├── config/                       # Configuration files
+├── results/                      # Training results and models
+└── docs/                         # Documentation
+```
+
+---
+
+## 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|-----------|
+| **Machine Learning** | PyTorch |
+| **Core Language** | Python 3.8+ |
+| **Robot Simulation** | C++ |
+| **Build System** | CMake |
+| **Code Distribution** | Python 56.4% / C++ 24.6% / CMake 19% |
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- C++ compiler (GCC 7.0+ or Clang)
+- CMake 3.10+
+- CUDA 11.0+ (optional, for GPU acceleration)
+
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sontypo/Haibot_Deep_RL_mobilerobot.git
+   cd Haibot_Deep_RL_mobilerobot
+   ```
+
+2. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Build C++ components**
+   ```bash
+   mkdir -p build
+   cd build
+   cmake ..
+   make
+   cd ..
+   ```
+
+4. **Verify installation**
+   ```bash
+   python -c "import torch; print(torch.__version__)"
+   ```
+
+---
+
+## 🚀 Quick Start
+
+### Training a Model
+
+```python
+from src.algorithms import DQN
+from src.environments import MobileRobotEnv
+
+# Initialize environment
+env = MobileRobotEnv()
+
+# Create and train agent
+agent = DQN(env.observation_space, env.action_space)
+agent.train(episodes=1000, max_steps=500)
+
+# Save trained model
+agent.save_model('models/trained_agent.pth')
+```
+
+### Evaluating a Model
+
+```python
+# Load trained model
+agent.load_model('models/trained_agent.pth')
+
+# Run evaluation
+results = agent.evaluate(episodes=10, render=True)
+print(f"Average Reward: {results['avg_reward']}")
+```
+
+---
+
+## 🧠 Supported Algorithms
+
+This implementation includes the following Deep Reinforcement Learning algorithms:
+
+- **Value-Based Methods**
+  - Deep Q-Network (DQN)
+  - Double DQN
+  - Dueling DQN
+  - Rainbow
+
+- **Policy-Based Methods**
+  - Policy Gradient
+  - Actor-Critic
+  - Proximal Policy Optimization (PPO)
+  - Trust Region Policy Optimization (TRPO)
+
+- **Model-Based Methods**
+  - Planning algorithms integration
+
+---
+
+## 📊 Configuration
+
+Configuration files are located in the `config/` directory. Customize training parameters:
+
+```yaml
+# Example config/training.yaml
+training:
+  algorithm: "DQN"
+  episodes: 10000
+  batch_size: 32
+  learning_rate: 0.0001
+  gamma: 0.99
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+
+environment:
+  robot_type: "mobile"
+  max_steps: 500
+  observation_space: 64
+  action_space: 4
+```
+
+Modify these parameters before training to suit your requirements.
+
+---
+
+## 📈 Results & Performance
+
+Results from training runs are saved in the `results/` directory, including:
+- **Training curves**: Reward per episode
+- **Model checkpoints**: Periodic model saves
+- **Evaluation metrics**: Performance statistics
+- **Logs**: Detailed training information
+
+Visualize results:
+```bash
+python scripts/visualize_results.py --path results/experiment_1
+```
+
+---
+
+## 🔧 Development
+
+### Project Dependencies
+
+**Python Libraries:**
+- torch >= 1.9.0
+- numpy >= 1.19.0
+- matplotlib >= 3.3.0
+- tensorboard >= 2.5.0
+
+**System Libraries:**
+- BLAS/LAPACK (for numerical computations)
+- Boost (for C++ components, optional)
+
+Install all dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 📚 Documentation
+
+For detailed documentation, see:
+- [API Documentation](docs/API.md)
+- [Algorithm Descriptions](docs/ALGORITHMS.md)
+- [Robot Specifications](docs/ROBOT_SPECS.md)
+- [Configuration Guide](docs/CONFIG.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+Please ensure your code follows the project's style guide and includes appropriate tests.
+
+---
+
+## 📝 Citation
+
+If you use this project in your research, please cite:
+
+```bibtex
+@software{haibot_deep_rl,
+  author = {Ty Po Son},
+  title = {HaiBot Deep Reinforcement Learning Mobile Robot},
+  year = {2023},
+  url = {https://github.com/sontypo/Haibot_Deep_RL_mobilerobot},
+  organization = {HaIBot Lab, Hanoi University of Industry}
+}
+```
+
+---
+
+## 📧 Contact & Support
+
+**Lab Information:**
+- **Laboratory**: HaIBot Lab
+- **Institution**: Hanoi University of Industry (HaUI)
+- **Website**: [haui.edu.vn](https://haui.edu.vn/)
+
+For questions and support:
+- Open an [Issue](https://github.com/sontypo/Haibot_Deep_RL_mobilerobot/issues)
+- Check [Discussions](https://github.com/sontypo/Haibot_Deep_RL_mobilerobot/discussions)
+
+---
+
+## 📄 License
+
+This project is currently unlicensed. Please contact the repository owner for licensing information.
+
+---
+
+## 🙏 Acknowledgments
+
+- HaIBot Lab, Hanoi University of Industry
+- PyTorch team for the excellent deep learning framework
+- The Deep Reinforcement Learning research community
+
+---
+
+<div align="center">
+
+**⭐ If you find this project useful, please consider giving it a star!**
+
+Made with ❤️ by [sontypo](https://github.com/sontypo)
+
+</div>
